@@ -167,6 +167,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   myCollider: {fileID: 3833783706067328420}
+  bodyPrefab: {fileID: 6043369011954090887, guid: f71b9cb11c84c214eab0d26f63b869e1, type: 3}
 --- !u!135 &7289608766428901991
 SphereCollider:
   m_ObjectHideFlags: 0
