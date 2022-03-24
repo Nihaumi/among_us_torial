@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class AU_CharacterCustomizer : MonoBehaviour
 {
 
-    /*[SerializeField] Color[] allColors;
+    [SerializeField] Color[] allColors;
 
 
     public void SetColor(int colorIndex)
@@ -17,5 +17,5 @@ public class AU_CharacterCustomizer : MonoBehaviour
     public void NextScene(int sceneIndex)
     {
         SceneManager.LoadScene(sceneIndex);
-    }*/
+    }
 }

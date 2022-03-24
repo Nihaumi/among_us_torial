@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class AU_PlayerController : MonoBehaviour
 {
     //to simulate multiplayer
-    //[SerializeField] bool hasControl;
-    //public static AU_PlayerController localPlayer; //singleton
+    [SerializeField] bool hasControl;
+    public static AU_PlayerController localPlayer; //singleton
 
     //player object
     Rigidbody myRB;
@@ -21,8 +21,8 @@ public class AU_PlayerController : MonoBehaviour
 
 
     //player color
-    //static Color myColor;
-    //SpriteRenderer myAvatarSprite;
+    static Color myColor;
+    SpriteRenderer myAvatarSprite;
 
     private void OnEnable()
     {
@@ -37,8 +37,14 @@ public class AU_PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //basics
+        myRB = GetComponent<Rigidbody>();
+        myAvatar = transform.GetChild(0);
+
+        myAnim = GetComponent<Animator>();
+
         //to simulate multiplayer
-        /* if (hasControl)
+        if (hasControl)
         {
             localPlayer = this;
         }
@@ -49,18 +55,13 @@ public class AU_PlayerController : MonoBehaviour
         {
             myColor = Color.white;
         }
-        myAvatarSprite.color = myColor;*/
-
-        //movement
-        myRB = GetComponent<Rigidbody>();
-        myAvatar = transform.GetChild(0);
-
-        myAnim = GetComponent<Animator>();
+        myAvatarSprite.color = myColor;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //movement
         movementInput = WASD.ReadValue<Vector2>();
 
         if(movementInput.x != 0)
@@ -78,12 +79,12 @@ public class AU_PlayerController : MonoBehaviour
 
 
     //color
-    /*public void SetColor(Color newColor)
+    public void SetColor(Color newColor)
     {
         myColor = newColor;
         if(myAvatarSprite != null)
         {
             myAvatarSprite.color = myColor;
         }
-    }*/
+    }
 }
