@@ -19,19 +19,34 @@ public class AU_PlayerController : MonoBehaviour
     Vector2 movementInput;
     [SerializeField] float movementSpeed;
 
-
     //player color
     static Color myColor;
     SpriteRenderer myAvatarSprite;
 
+    //Role
+    [SerializeField] bool isImposter;
+    [SerializeField] InputAction KILL;
+
+    AU_PlayerController target;
+    [SerializeField] Collider myCollider;
+
+    bool isDead;
+
+    private void Awake()
+    {
+        KILL.performed += KILLTarget;
+    }
+
     private void OnEnable()
     {
         WASD.Enable();
+        KILL.Enable();
     }
 
     private void OnDisable()
     {
         WASD.Disable();
+        KILL.Disable();
     }
 
     // Start is called before the first frame update
@@ -55,12 +70,21 @@ public class AU_PlayerController : MonoBehaviour
         {
             myColor = Color.white;
         }
+        if (!hasControl)
+        {
+            return;
+        }
         myAvatarSprite.color = myColor;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!hasControl)
+        {
+            return;
+        }
+
         //movement
         movementInput = WASD.ReadValue<Vector2>();
 
@@ -86,5 +110,61 @@ public class AU_PlayerController : MonoBehaviour
         {
             myAvatarSprite.color = myColor;
         }
+    }
+
+    //Role
+    public void SetRole(bool newRole)
+    {
+        isImposter = newRole;
+    }
+
+    private void OnTriggerEnter(Collider other) //checks if touched player is fellow imposter
+    {
+        if(other.tag == "Player")
+        {
+            AU_PlayerController tempTarget = other.GetComponent<AU_PlayerController>();
+            if (isImposter)
+            {
+                if (tempTarget.isImposter)
+                {
+                    return;
+                }
+                else
+                {
+                    target = tempTarget;
+                    Debug.Log(target.name);
+                }
+            }
+        }
+    }
+
+    void KILLTarget(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Performed)
+        {
+            if(target == null)
+            {
+                return;
+            }
+            else
+            {
+                if (target.isDead)
+                {
+                    return;
+                }
+
+                transform.position = target.transform.position; 
+                target.Die();
+                target = null;
+            }
+        }
+    }
+
+    public void Die()
+    {
+        isDead = true;
+
+        myAnim.SetBool("IsDead", isDead);
+        myCollider.enabled = false;
     }
 }
